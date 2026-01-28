@@ -1,6 +1,7 @@
 import os
 import shlex
 import subprocess
+import shutil
 
 try:
     import curses
@@ -31,6 +32,29 @@ def build_tmux_command(path, session, cmd):
     if cmd:
         return f"__gtw_tmux__ {sh_escape(path)} {sh_escape(session)} {cmd}"
     return f"__gtw_tmux__ {sh_escape(path)} {sh_escape(session)}"
+
+
+def close_tmux_panes_for_path(path):
+    if "TMUX" not in os.environ:
+        return
+    tmux_bin = shutil.which("tmux")
+    if not tmux_bin:
+        return
+    current_pane = os.environ.get("TMUX_PANE")
+    try:
+        output = subprocess.check_output(
+            [tmux_bin, "list-panes", "-a", "-F", "#{pane_id} #{pane_current_path}"],
+            text=True,
+        )
+    except subprocess.CalledProcessError:
+        return
+    target = os.path.normpath(path)
+    for line in output.splitlines():
+        pane_id, _, pane_path = line.partition(" ")
+        if not pane_id or not pane_path:
+            continue
+        if os.path.normpath(pane_path) == target and pane_id != current_pane:
+            subprocess.run([tmux_bin, "kill-pane", "-t", pane_id], check=False)
 
 
 def prompt_input(screen, prompt, default=""):
@@ -202,6 +226,7 @@ def select_worktree(cwd):
                         args.append("-f")
                     args.append(wt.path)
                     run_git(args, git_cwd)
+                    close_tmux_panes_for_path(wt.path)
                     if wt.branch:
                         branch_name = wt.branch.replace("refs/heads/", "")
                         if branch_git_cwd:
