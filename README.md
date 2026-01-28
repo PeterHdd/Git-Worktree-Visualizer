@@ -41,6 +41,8 @@ Open the UI:
 gtw
 ```
 
+Demo: https://www.youtube.com/watch?v=MN7pqxWY-Bc
+
 Pick a worktree and press:
 - `enter` to switch
 - `c` to create a new worktree
