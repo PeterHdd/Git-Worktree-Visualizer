@@ -96,6 +96,7 @@ def select_worktree(cwd):
         return list_worktrees(git_cwd)
 
     def inner(screen):
+        nonlocal git_cwd
         try:
             curses.use_default_colors()
         except Exception:
@@ -212,6 +213,11 @@ def select_worktree(cwd):
                     screen.getch()
                 if delete_current:
                     return ("open_path", fallback)
+                if os.path.normpath(wt.path) == os.path.normpath(git_cwd):
+                    if other_paths:
+                        git_cwd = other_paths[0]
+                    elif os.path.exists(cwd):
+                        git_cwd = cwd
                 items = refresh()
                 index = min(index, len(items) - 1)
         return None

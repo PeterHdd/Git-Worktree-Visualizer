@@ -27,12 +27,6 @@ cd git-worktree-visualizer
 curl -fsSL https://raw.githubusercontent.com/PeterHdd/Git-Worktree-Visualizer/main/install.sh | sh
 ```
 
-## Uninstall
-
-```bash
-./uninstall.sh
-```
-
 ### One-line uninstall
 
 ```bash
