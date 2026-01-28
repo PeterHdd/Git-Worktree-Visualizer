@@ -73,6 +73,7 @@ Git worktrees are great, but jumping between them is still friction. This gives 
 
 - Python 3 (curses is in the standard library)
 - Git
+- tmux
 
 ## License
 
