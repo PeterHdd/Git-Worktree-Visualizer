@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>git-worktree-visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <p class="eyebrow">Terminal-first workflow</p>
+        <h1>git-worktree-visualizer</h1>
+        <p class="lede">
+          A focused TUI to create, switch, and manage Git worktrees with tmux splits.
+          Designed to feel like a native part of your shell.
+        </p>
+        <div class="cta">
+          <a class="btn" href="https://github.com/your-org/git-worktree-visualizer">View on GitHub</a>
+          <a class="btn ghost" href="#install">Install</a>
+        </div>
+      </header>
+
+      <section class="card terminal">
+        <div class="terminal-top">
+          <span></span><span></span><span></span>
+          <p>worktrees · my-repo</p>
+        </div>
+        <pre>
+main                         /repo
+feature/auth                 /repo/.worktrees/feature/auth
+bugfix/login                 /repo/.worktrees/bugfix/login
+
+↑/↓ move  enter open  c create  t tmux  r refresh  q quit
+        </pre>
+      </section>
+
+      <section class="grid">
+        <article>
+          <h2>Built for flow</h2>
+          <p>One screen. One task. Everything you need to move between worktrees without context switching.</p>
+        </article>
+        <article>
+          <h2>Agent-ready</h2>
+          <p>Launch Codex, Claude, Gemini, or your custom command directly in the selected worktree.</p>
+        </article>
+        <article>
+          <h2>Zero bloat</h2>
+          <p>Python standard library + Git. No node, no fzf, no extra services.</p>
+        </article>
+      </section>
+
+      <section id="install" class="card install">
+        <h2>Install</h2>
+        <pre><code>./install.sh
+
+gtw</code></pre>
+        <p class="note">Adds a small shell function so your terminal can <span>cd</span> into the selection.</p>
+      </section>
+
+      <footer>
+        <p>Minimal by design. Extend it as you need.</p>
+      </footer>
+    </main>
+  </body>
+</html>

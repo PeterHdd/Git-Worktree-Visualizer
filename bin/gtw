@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+LIB=${GTW_LIB:-"$HOME/.local/lib/git-worktree-visualizer"}
+exec python3 "$LIB/gtw.py" "$@"
