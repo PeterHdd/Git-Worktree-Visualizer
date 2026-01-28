@@ -96,6 +96,10 @@ def select_worktree(cwd):
         return list_worktrees(git_cwd)
 
     def inner(screen):
+        try:
+            curses.use_default_colors()
+        except Exception:
+            pass
         curses.curs_set(0)
         index = 0
         items = worktrees
