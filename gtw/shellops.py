@@ -31,7 +31,7 @@ def shell_init(shell):
               "$tmux_bin" set-environment -g SHELL "$shell_bin" >/dev/null 2>&1
               if [ -n "$TMUX" ]; then
                 local panes dir
-                panes="$("$tmux_bin" list-panes -F "#{pane_index}" | wc -l | tr -d ' ')"
+                panes="$("$tmux_bin" list-panes -F "#{pane_index}" | /usr/bin/wc -l | /usr/bin/tr -d ' ')"
                 if [ "$panes" -le 1 ]; then
                   dir="h"
                 else
@@ -50,7 +50,7 @@ def shell_init(shell):
               else
                 if "$tmux_bin" has-session -t "$session" 2>/dev/null; then
                   local panes dir
-                  panes="$("$tmux_bin" list-panes -t "$session:0" -F "#{pane_index}" | wc -l | tr -d ' ')"
+                  panes="$("$tmux_bin" list-panes -t "$session:0" -F "#{pane_index}" | /usr/bin/wc -l | /usr/bin/tr -d ' ')"
                   if [ "$panes" -le 1 ]; then
                     dir="h"
                   else
@@ -119,7 +119,7 @@ def shell_init(shell):
               "$tmux_bin" set-environment -g SHELL "$shell_bin" >/dev/null 2>&1
               if [ -n "$TMUX" ]; then
                 local panes dir
-                panes="$("$tmux_bin" list-panes -F "#{pane_index}" | wc -l | tr -d ' ')"
+                panes="$("$tmux_bin" list-panes -F "#{pane_index}" | /usr/bin/wc -l | /usr/bin/tr -d ' ')"
                 if [ "$panes" -le 1 ]; then
                   dir="h"
                 else
@@ -138,7 +138,7 @@ def shell_init(shell):
               else
                 if "$tmux_bin" has-session -t "$session" 2>/dev/null; then
                   local panes dir
-                  panes="$("$tmux_bin" list-panes -t "$session:0" -F "#{pane_index}" | wc -l | tr -d ' ')"
+                  panes="$("$tmux_bin" list-panes -t "$session:0" -F "#{pane_index}" | /usr/bin/wc -l | /usr/bin/tr -d ' ')"
                   if [ "$panes" -le 1 ]; then
                     dir="h"
                   else
