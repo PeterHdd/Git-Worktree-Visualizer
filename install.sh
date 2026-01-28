@@ -1,12 +1,27 @@
 #!/usr/bin/env sh
 set -e
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+
+if [ ! -f "$SCRIPT_DIR/bin/gtw" ]; then
+  tmpdir="$(mktemp -d)"
+  tarball="https://github.com/PeterHdd/Git-Worktree-Visualizer/archive/refs/heads/main.tar.gz"
+  /usr/bin/curl -fsSL "$tarball" | /usr/bin/tar -xz -C "$tmpdir"
+  repo_dir="$(find "$tmpdir" -maxdepth 1 -type d -name 'Git-Worktree-Visualizer-*' | head -n 1)"
+  if [ -z "$repo_dir" ]; then
+    echo "failed to download repo" >&2
+    exit 1
+  fi
+  sh "$repo_dir/install.sh"
+  rm -rf "$tmpdir"
+  exit 0
+fi
 PREFIX=${PREFIX:-"$HOME/.local"}
 LIBDIR=${LIBDIR:-"$PREFIX/lib/git-worktree-visualizer"}
 mkdir -p "$PREFIX/bin" "$LIBDIR"
 rm -rf "$LIBDIR/gtw"
-cp "$(dirname "$0")/bin/gtw" "$PREFIX/bin/gtw"
-cp "$(dirname "$0")/gtw.py" "$LIBDIR/gtw.py"
-cp -R "$(dirname "$0")/gtw" "$LIBDIR/gtw"
+cp "$SCRIPT_DIR/bin/gtw" "$PREFIX/bin/gtw"
+cp "$SCRIPT_DIR/gtw.py" "$LIBDIR/gtw.py"
+cp -R "$SCRIPT_DIR/gtw" "$LIBDIR/gtw"
 chmod +x "$PREFIX/bin/gtw" "$LIBDIR/gtw.py"
 
 shell=${SHELL##*/}
