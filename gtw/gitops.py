@@ -28,6 +28,9 @@ class Worktree:
         self.path = path
         self.branch = branch
         self.head = head
+        self.is_dirty = False
+        self.ahead = None
+        self.behind = None
 
     @property
     def label(self):
@@ -80,3 +83,30 @@ def worktree_for_branch(worktrees, branch_name):
         if wt.branch == target:
             return wt
     return None
+
+
+def worktree_is_dirty(path, git_cwd):
+    try:
+        status = run_git(["-C", path, "status", "--porcelain"], git_cwd)
+        return bool(status.strip())
+    except Exception:
+        return False
+
+
+def worktree_divergence(path, git_cwd):
+    try:
+        upstream = run_git(
+            ["-C", path, "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"],
+            git_cwd,
+        )
+    except Exception:
+        return None
+    try:
+        counts = run_git(
+            ["-C", path, "rev-list", "--left-right", "--count", f"HEAD...{upstream}"],
+            git_cwd,
+        )
+        ahead_str, behind_str = counts.split()
+        return int(ahead_str), int(behind_str)
+    except Exception:
+        return None

@@ -16,6 +16,8 @@ from .gitops import (
     repo_name,
     repo_root,
     run_git,
+    worktree_divergence,
+    worktree_is_dirty,
     worktree_for_branch,
 )
 
@@ -86,7 +88,22 @@ def draw(screen, title, items, index, footer):
     else:
         for i in range(start, end):
             wt = items[i]
-            line = f"{wt.label:<28} {wt.path}"
+            width = max_x - 4
+            base = f"{wt.label:<28} "
+            status = "*" if wt.is_dirty else "."
+            if wt.ahead is None or wt.behind is None:
+                divergence = "↑- ↓-"
+            else:
+                divergence = f"↑{wt.ahead} ↓{wt.behind}"
+            suffix = f" {status} {divergence}"
+            avail = max(0, width - len(base) - len(suffix))
+            path = wt.path
+            if len(path) > avail:
+                if avail >= 3:
+                    path = f"{path[: max(0, avail - 3)]}..."
+                else:
+                    path = path[:avail]
+            line = f"{base}{path.ljust(avail)}{suffix}"
             attr = curses.A_REVERSE if i == index else curses.A_NORMAL
             screen.addstr(list_top + (i - start), 2, line[: max_x - 4], attr)
 
@@ -114,10 +131,21 @@ def select_worktree(cwd):
     repo = repo_name(git_cwd)
     default_cmd = load_default_cmd()
     title = f"worktrees · {repo}"
-    footer = "↑/↓ move  enter open  c create  t tmux  d delete  r refresh  q quit"
+    footer = (
+        "↑/↓ move  enter open  c create  t tmux  d delete  r refresh  q quit  "
+        "* dirty  . clean  ↑/↓ divergence"
+    )
 
     def refresh():
-        return list_worktrees(git_cwd)
+        items = list_worktrees(git_cwd)
+        for wt in items:
+            wt.is_dirty = worktree_is_dirty(wt.path, git_cwd)
+            divergence = worktree_divergence(wt.path, git_cwd)
+            if divergence:
+                wt.ahead, wt.behind = divergence
+            else:
+                wt.ahead, wt.behind = None, None
+        return items
 
     def inner(screen):
         nonlocal git_cwd
@@ -127,7 +155,7 @@ def select_worktree(cwd):
             pass
         curses.curs_set(0)
         index = 0
-        items = worktrees
+        items = refresh()
         while True:
             draw(screen, title, items, index, footer)
             key = screen.getch()

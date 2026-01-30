@@ -6,11 +6,11 @@ Minimal, fast, and shell-friendly. No node, no fzf, no extras.
 
 ```
 worktrees · my-repo
-----------------------------------------------
-main                         /repo
-feature/auth                 /repo/.worktrees/feature/auth
-bugfix/login                 /repo/.worktrees/bugfix/login
-----------------------------------------------
+--------------------------------------------------------------
+main                         /repo                         .  ↑0 ↓0
+feature/auth                 /repo/.worktrees/feature/auth  *  ↑3 ↓1
+bugfix/login                 /repo/.worktrees/bugfix/login  .  ↑0 ↓0
+--------------------------------------------------------------
 ↑/↓ move  enter open  c create  t tmux  r refresh  q quit
 ```
 
@@ -47,6 +47,11 @@ Pick a worktree and press:
 - `enter` to switch
 - `c` to create a new worktree
 - `t` to open in tmux (split panes, keeps gtw visible)
+
+Status columns:
+- `*` dirty worktree
+- `.` clean worktree
+- `↑n ↓m` ahead/behind vs upstream
 
 ### Multi-worktree workflow
 
