@@ -9,6 +9,7 @@ except Exception:
     curses = None
 
 from .config import load_default_cmd
+from . import __version__
 from .gitops import (
     current_branch,
     default_branch,
@@ -130,7 +131,7 @@ def select_worktree(cwd):
 
     repo = repo_name(git_cwd)
     default_cmd = load_default_cmd()
-    title = f"worktrees · {repo}"
+    title = f"worktrees · {repo} · v{__version__}"
     footer = (
         "↑/↓ move  enter open  c create  t tmux  d delete  r refresh  q quit  "
         "* dirty  . clean  ↑/↓ divergence"
