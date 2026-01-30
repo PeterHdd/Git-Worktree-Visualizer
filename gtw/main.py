@@ -33,14 +33,16 @@ def main():
         print(str(exc), file=sys.stderr)
         return 1
 
-    if not cmd:
-        return 1
-
     if args.emit and args.out:
         with open(args.out, "w", encoding="utf-8") as handle:
-            handle.write(cmd)
-    else:
-        print(cmd)
+            if cmd:
+                handle.write(cmd)
+        return 0
+
+    if not cmd:
+        return 0
+
+    print(cmd)
     return 0
 
 

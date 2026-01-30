@@ -77,6 +77,11 @@ def shell_init(shell):
             }
             gtw() {
               local tmp cmd rc
+              if [ "$1" = "shell-init" ]; then
+                shift
+                command gtw shell-init "$@"
+                return $?
+              fi
               tmp="$(mktemp -t gtw.XXXXXX)" || return
               command gtw --emit --out "$tmp" "$@" </dev/tty >/dev/tty
               rc=$?
@@ -86,7 +91,7 @@ def shell_init(shell):
               fi
               cmd="$(cat "$tmp")"
               rm -f "$tmp"
-              [ -n "$cmd" ] || return 1
+              [ -n "$cmd" ] || return 0
               eval "$cmd"
             }
             """
@@ -165,6 +170,11 @@ def shell_init(shell):
             }
             gtw() {
               local tmp cmd rc
+              if [ "$1" = "shell-init" ]; then
+                shift
+                command gtw shell-init "$@"
+                return $?
+              fi
               tmp="$(mktemp -t gtw.XXXXXX)" || return
               command gtw --emit --out "$tmp" "$@" </dev/tty >/dev/tty
               rc=$?
@@ -174,7 +184,7 @@ def shell_init(shell):
               fi
               cmd="$(cat "$tmp")"
               rm -f "$tmp"
-              [ -n "$cmd" ] || return 1
+              [ -n "$cmd" ] || return 0
               eval "$cmd"
             }
             """
