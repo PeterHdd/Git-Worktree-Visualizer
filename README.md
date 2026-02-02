@@ -1,5 +1,7 @@
 # git-worktree-visualizer
 
+![version](https://img.shields.io/badge/version-0.1.0-blue)
+
 A tiny terminal UI to create, switch, and manage Git worktrees with tmux splits.
 
 Minimal, fast, and shell-friendly. No node, no fzf, no extras.
